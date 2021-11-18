@@ -1,31 +1,24 @@
 import { Container, Grid, Paper } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import CardItem from '../components/CardItem';
+import { fetchData } from '../action/api';
+import { useDispatch, useSelector } from 'react-redux';
 
 function CardsSections() {
-  const [listData, setListData] = useState([]);
+  const dispatch = useDispatch();
+  const fetchNotes = useSelector((state) => state.myNotes.notes);
 
   useEffect(() => {
-    fetch('https://6176c9f903178d00173dae84.mockapi.io/Notes')
-      .then((res) => res.json())
-      .then((data) => setListData(data));
-  }, []);
-
-  const handleRemove = async (id) => {
-    await fetch('https://6176c9f903178d00173dae84.mockapi.io/Notes/' + id, {
-      method: 'DELETE',
-    });
-    let allExcept = listData.filter((elem) => elem.id !== id);
-    setListData(allExcept);
-  };
+    dispatch(fetchData());
+  }, [fetchNotes]);
 
   return (
     <Container>
       <Grid container spacing={3}>
-        {listData.map((elem) => {
+        {fetchNotes.map((elem) => {
           return (
-            <Grid key={elem.id} item xs={12} md={6} lg={4}>
-              <CardItem handleRemove={handleRemove} note={elem} />
+            <Grid key={elem._id} item xs={12} md={6} lg={4}>
+              <CardItem note={elem} />
             </Grid>
           );
         })}

@@ -3,23 +3,33 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import { Card, IconButton, Typography } from '@material-ui/core';
 import { DeleteOutline } from '@material-ui/icons';
+import { removeNote } from '../action/api';
+import { useDispatch } from 'react-redux';
 
-function CardItem({ note, handleRemove }) {
+function CardItem(props) {
+  const { title, text, createdAt, _id } = props.note;
+
+  const dispatch = useDispatch();
+
+  const handleRemove = (id) => {
+    dispatch(removeNote(id));
+  };
+
   return (
     <div>
       <Card>
         <CardHeader
           action={
-            <IconButton onClick={() => handleRemove(note.id)}>
+            <IconButton onClick={() => handleRemove(_id)}>
               <DeleteOutline />
             </IconButton>
           }
-          title={note.title}
-          subheader={note.createdAt}
+          title={title}
+          subheader={createdAt}
         />
         <CardContent>
           <Typography variant="body2" color="textSecondary">
-            {note.text}
+            {text}
           </Typography>
         </CardContent>
       </Card>
