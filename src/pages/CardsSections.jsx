@@ -10,7 +10,7 @@ function CardsSections() {
 
   useEffect(() => {
     dispatch(fetchData());
-  }, [fetchNotes]);
+  }, []);
 
   return (
     <Container>

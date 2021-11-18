@@ -1,15 +1,27 @@
 import { Button, Container, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
-import axios from 'axios';
-import { addNewNote } from '../action/api';
 import { useDispatch } from 'react-redux';
+import { updateNote } from '../action/api';
 
-function Form() {
+function Form(props) {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
 
   const dispatch = useDispatch();
+
+  const id = props.match.params.id;
+
+  const handleUpdate = () => {
+    dispatch(
+      updateNote(id, {
+        title,
+        text,
+      }),
+    );
+    setTitle('');
+    setText('');
+  };
 
   const useStyles = makeStyles({
     inputs: {
@@ -23,19 +35,6 @@ function Form() {
   });
 
   const classes = useStyles();
-
-  const handleSend = async (e) => {
-    e.preventDefault();
-    let objData = {
-      title,
-      text,
-    };
-
-    await dispatch(addNewNote(objData));
-
-    setTitle('');
-    setText('');
-  };
 
   return (
     <Container maxWidth="sm">
@@ -60,12 +59,12 @@ function Form() {
         value={text}
       />
       <Button
-        onClick={handleSend}
+        onClick={() => handleUpdate()}
         className={classes.button}
         fullWidth
         variant="contained"
         color="primary">
-        Save Note
+        Update Note
       </Button>
     </Container>
   );

@@ -1,18 +1,22 @@
 import React from 'react';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import { Card, IconButton, Typography } from '@material-ui/core';
+import { Card, IconButton, Typography, CardHeader, CardContent } from '@material-ui/core';
 import { DeleteOutline } from '@material-ui/icons';
-import { removeNote } from '../action/api';
+import { removeNote, updateNote } from '../action/api';
 import { useDispatch } from 'react-redux';
-
+import EditIcon from '@material-ui/icons/Edit';
+import { useHistory } from 'react-router';
 function CardItem(props) {
   const { title, text, createdAt, _id } = props.note;
+  const hisoty = useHistory();
 
   const dispatch = useDispatch();
 
   const handleRemove = (id) => {
     dispatch(removeNote(id));
+  };
+
+  const handleUpdate = (note) => {
+    hisoty.push(`/update/${_id}`);
   };
 
   return (
@@ -32,6 +36,9 @@ function CardItem(props) {
             {text}
           </Typography>
         </CardContent>
+        <IconButton onClick={() => handleUpdate(props.note)}>
+          <EditIcon />
+        </IconButton>
       </Card>
     </div>
   );
