@@ -15,7 +15,7 @@ function CardItem(props) {
     dispatch(removeNote(id));
   };
 
-  const handleUpdate = (note) => {
+  const handleUpdate = () => {
     hisoty.push(`/update/${_id}`);
   };
 
